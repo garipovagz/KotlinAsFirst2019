@@ -309,7 +309,7 @@ fun isPalindrome(n: Int): Boolean {
     }
     n1 = n
     for (i in count downTo 1) {
-        n2 += (n1 % 10) * (10.0.pow(i).toInt() / 10)
+        n2 += (n1 % 10) * (10.0.pow(i - 1).toInt())
         n1 /= 10
     }
     if (n == n2) return true
