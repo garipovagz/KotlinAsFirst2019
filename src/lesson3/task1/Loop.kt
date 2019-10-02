@@ -4,6 +4,8 @@ package lesson3.task1
 
 import lesson1.task1.sqr
 import ru.spbstu.kotlin.generate.assume.retry
+import kotlin.math.PI
+import kotlin.math.abs
 import kotlin.math.pow
 import kotlin.math.sqrt
 
@@ -88,8 +90,19 @@ fun digitNumber(n: Int): Int {
  * Ряд Фибоначчи определён следующим образом: fib(1) = 1, fib(2) = 1, fib(n+2) = fib(n) + fib(n+1)
  */
 fun fib(n: Int): Int {
-    if (n > 2) return fib(n - 2) + fib(n - 1)
-    return 1
+    var fib1 = 1
+    var fib2 = 1
+    var fib12: Int
+    var i = 0
+    if (n > 2) {
+        while (i < n - 2) {
+            fib12 = fib1 + fib2
+            fib1 = fib2
+            fib2 = fib12
+            i += 1
+        }
+    }
+    return fib2
 }
 
 /**
@@ -206,7 +219,24 @@ fun collatzSteps(x: Int): Int {
  * Подумайте, как добиться более быстрой сходимости ряда при больших значениях x.
  * Использовать kotlin.math.sin и другие стандартные реализации функции синуса в этой задаче запрещается.
  */
-fun sin(x: Double, eps: Double): Double = TODO()
+fun sin(x: Double, eps: Double): Double {
+    var sinX = 0.0
+    var i = 1
+    var x1 = x
+    var x2: Double
+    if (x > 0)
+        while (x1 > 2 * PI)
+            x1 -= 2 * PI
+    else
+        while (x1 < 0)
+            x1 += 2 * PI
+    do {
+        x2 = (-1.0).pow(i - 1) * x1.pow(2 * i - 1) / factorial(2 * i - 1)
+        sinX += x2
+        i += 1
+    } while (abs(x2) > eps)
+    return sinX
+}
 
 /**
  * Средняя
@@ -217,7 +247,25 @@ fun sin(x: Double, eps: Double): Double = TODO()
  * Подумайте, как добиться более быстрой сходимости ряда при больших значениях x.
  * Использовать kotlin.math.cos и другие стандартные реализации функции косинуса в этой задаче запрещается.
  */
-fun cos(x: Double, eps: Double): Double = TODO()
+fun cos(x: Double, eps: Double): Double {
+    var cosX = 0.0
+    var x1 = x
+    var i = 0
+    var x2: Double
+    if (x > 0)
+        while (x1 > 2 * PI)
+            x1 -= 2 * PI
+    else
+        while (x1 < 2 * PI)
+            x1 += 2 * PI
+    do {
+        x2 = (-1.0).pow(i) * x1.pow(2 * i) / factorial(2 * i)
+        cosX += x2
+        i += 1
+    } while (abs(x2) > eps)
+    return cosX
+}
+
 
 /**
  * Средняя
