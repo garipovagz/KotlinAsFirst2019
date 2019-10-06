@@ -3,7 +3,6 @@
 package lesson3.task1
 
 import lesson1.task1.sqr
-import ru.spbstu.kotlin.generate.assume.retry
 import kotlin.math.PI
 import kotlin.math.abs
 import kotlin.math.pow
@@ -74,12 +73,13 @@ fun digitCountInNumber(n: Int, m: Int): Int =
  * Использовать операции со строками в этой задаче запрещается.
  */
 fun digitNumber(n: Int): Int {
-    var k = 1
+    var k = 0
     var n1 = n
-    while (n1 / 10 > 0) {
+    while (n1 > 0) {
         k += 1
         n1 /= 10
     }
+    if (n == 0) k += 1
     return k
 }
 
@@ -114,7 +114,7 @@ fun fib(n: Int): Int {
 fun lcm(m: Int, n: Int): Int {
     var m1 = m
     var n1 = n
-    while (m1 != 0 && n1 != 0){
+    while (m1 != 0 && n1 != 0) {
         if (n1 > m1) n1 %= m1 else
             m1 %= n1
     }
@@ -160,7 +160,7 @@ fun maxDivisor(n: Int): Int {
 fun isCoPrime(m: Int, n: Int): Boolean {
     var n1 = n
     var m1 = m
-    while (m1 != 0 && n1 != 0){
+    while (m1 != 0 && n1 != 0) {
         if (n1 > m1) n1 %= m1 else
             m1 %= n1
     }
@@ -279,7 +279,7 @@ fun revert(n: Int): Int {
     var n2 = 0
     var count = 0
     while (n1 != 0) {
-        if (n1 > 0) count += 1
+        count += 1
         n1 /= 10
     }
     n1 = n
@@ -304,7 +304,7 @@ fun isPalindrome(n: Int): Boolean {
     var count = 0
     var n1 = n
     while (n1 != 0) {
-        if (n1 > 0) count += 1
+        count += 1
         n1 /= 10
     }
     n1 = n
@@ -329,7 +329,7 @@ fun hasDifferentDigits(n: Int): Boolean {
     var sum = 0
     var count = 0
     while (n1 != 0) {
-        if (n1 > 0) count += 1
+        count += 1
         n1 /= 10
     }
     n1 = n
@@ -351,6 +351,7 @@ fun hasDifferentDigits(n: Int): Boolean {
  * Использовать операции со строками в этой задаче запрещается.
  */
 fun squareSequenceDigit(n: Int): Int = TODO()
+
 
 /**
  * Сложная
