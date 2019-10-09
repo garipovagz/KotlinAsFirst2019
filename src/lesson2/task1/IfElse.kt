@@ -65,12 +65,12 @@ fun minBiRoot(a: Double, b: Double, c: Double): Double {
  * Мой возраст. Для заданного 0 < n < 200, рассматриваемого как возраст человека,
  * вернуть строку вида: «21 год», «32 года», «12 лет».
  */
-fun ageDescription(age: Int): String {
-    return if (age % 100 == 11 || age % 100 == 12 || age % 100 == 13 || age % 100 == 14) "$age лет" else
-        if (age % 10 == 1) "$age год" else
-            if (age % 10 == 2 || age % 10 == 3 || age % 10 == 4) "$age года" else
-                "$age лет"
-}
+fun ageDescription(age: Int): String =
+    if (age % 100 == 11 || age % 100 == 12 || age % 100 == 13 || age % 100 == 14) "$age лет"
+    else if (age % 10 == 1) "$age год"
+    else if (age % 10 == 2 || age % 10 == 3 || age % 10 == 4) "$age года"
+    else "$age лет"
+
 
 
 /**
@@ -87,13 +87,14 @@ fun timeForHalfWay(
 ): Double {
     val s = v1 * t1 + v2 * t2 + v3 * t3
     val l = s / 2
-    if (l > v1 * t1 + v2 * t2) return (l - (v1 * t1 + v2 * t2)) / v3 + t1 + t2 else
-        if (l == v1 * t1 + v2 * t2) return t1 + t2
-    if (l > v1 * t1) return (l - v1 * t1) / v2 + t1
-    if (l < v1 * t1) return l / v1
-    return t1
+    return when {
+        (l > v1 * t1 + v2 * t2) -> (l - (v1 * t1 + v2 * t2)) / v3 + t1 + t2
+        (l == v1 * t1 + v2 * t2) -> t1 + t2
+        (l > v1 * t1) -> (l - v1 * t1) / v2 + t1
+        (l < v1 * t1) -> l / v1
+        else -> t1
+    }
 }
-
 
 /**
  * Простая
@@ -146,9 +147,9 @@ fun rookOrBishopThreatens(
  * Если такой треугольник не существует, вернуть -1.
  */
 fun triangleKind(a: Double, b: Double, c: Double): Int {
-    if (a + b < c || a + c < b || b + c < a) return -1 else
-        if (sqr(a) == sqr(b) + sqr(c) || sqr(b) == sqr(a) + sqr(c) || sqr(c) == sqr(a) + sqr(b)) return 1 else
-            if (sqr(a) >= sqr(b) + sqr(c) || sqr(b) >= sqr(a) + sqr(c) || sqr(c) >= sqr(a) + sqr(b)) return 2
+    if (a + b < c || a + c < b || b + c < a) return -1
+    else if (sqr(a) == sqr(b) + sqr(c) || sqr(b) == sqr(a) + sqr(c) || sqr(c) == sqr(a) + sqr(b)) return 1
+    else if (sqr(a) >= sqr(b) + sqr(c) || sqr(b) >= sqr(a) + sqr(c) || sqr(c) >= sqr(a) + sqr(b)) return 2
     return 0
 }
 
