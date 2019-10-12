@@ -266,7 +266,7 @@ fun revert(n: Int): Int {
     var n2 = 0
     val count = digitNumber(n1)
     for (i in count downTo 1) {
-        n2 += (n1 % 10) * (10.0.pow(i).toInt() / 10)
+        n2 += (n1 % 10) * (10.0.pow(i - 1).toInt())
         n1 /= 10
     }
     return n2
