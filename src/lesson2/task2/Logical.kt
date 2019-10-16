@@ -38,8 +38,8 @@ fun queenThreatens(x1: Int, y1: Int, x2: Int, y2: Int): Boolean =
  * Дан номер месяца (от 1 до 12 включительно) и год (положительный).
  * Вернуть число дней в этом месяце этого года по григорианскому календарю.
  */
-fun daysInMonth(month: Int, year: Int): Int {
-    return when {
+fun daysInMonth(month: Int, year: Int): Int =
+    when {
         (year % 4 != 0 || (year % 100 == 0 && year % 400 != 0)) && (month == 2) -> 28
         ((year % 4 == 0 && year % 100 != 0) || (year % 100 == 0 && year % 400 == 0)) && (month == 2) -> 29
         (month in 1..7 && month % 2 == 1) -> 31
@@ -47,7 +47,6 @@ fun daysInMonth(month: Int, year: Int): Int {
         (month in 8..12 && month % 2 == 0) -> 31
         else -> 30
     }
-}
 
 /**
  * Средняя
@@ -59,8 +58,7 @@ fun daysInMonth(month: Int, year: Int): Int {
 fun circleInside(
     x1: Double, y1: Double, r1: Double,
     x2: Double, y2: Double, r2: Double
-): Boolean =
-sqrt(sqr(x2 - x1) + sqr(y2 - y1)) <= r2 - r1
+) = sqrt(sqr(x2 - x1) + sqr(y2 - y1)) <= r2 - r1
 
 /**
  * Средняя

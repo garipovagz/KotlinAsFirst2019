@@ -94,13 +94,11 @@ fun fib(n: Int): Int {
     var fib2 = 1
     var fib12: Int
     var i = 0
-    if (n > 2) {
-        while (i < n - 2) {
-            fib12 = fib1 + fib2
-            fib1 = fib2
-            fib2 = fib12
-            i += 1
-        }
+    while (i < n - 2) {
+        fib12 = fib1 + fib2
+        fib1 = fib2
+        fib2 = fib12
+        i += 1
     }
     return fib2
 }
@@ -135,6 +133,7 @@ fun minDivisor(n: Int): Int {
     if (d == 1) return n
     return d
 }
+
 
 /**
  * Простая
@@ -220,9 +219,8 @@ fun collatzSteps(x: Int): Int {
 fun sin(x: Double, eps: Double): Double {
     var sinX = 0.0
     var i = 1
-    var x1 = x
+    val x1 = x % (2 * PI)
     var x2: Double
-    x1 %= 2 * PI
     do {
         x2 = (-1.0).pow(i - 1) * x1.pow(2 * i - 1) / factorial(2 * i - 1)
         sinX += x2
@@ -242,10 +240,9 @@ fun sin(x: Double, eps: Double): Double {
  */
 fun cos(x: Double, eps: Double): Double {
     var cosX = 0.0
-    var x1 = x
+    val x1 = x % (2 * PI)
     var i = 0
     var x2: Double
-    x1 %= 2 * PI
     do {
         x2 = (-1.0).pow(i) * x1.pow(2 * i) / factorial(2 * i)
         cosX += x2
