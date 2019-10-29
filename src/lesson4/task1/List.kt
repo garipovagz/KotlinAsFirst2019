@@ -179,10 +179,11 @@ fun times(a: List<Int>, b: List<Int>): Int {
 fun polynom(p: List<Int>, x: Int): Int {
     val x1 = x.toDouble()
     var px1 = 0
-    for (i in 0 until p.size) {
-        val px = p[i] * x1.pow(i)
-        px1 += px.toInt()
-    }
+    if (p.isNotEmpty())
+        for (i in 0 until p.size) {
+            val px = p[i] * (x1.pow(i)).toInt()
+            px1 += px
+        }
     return px1
 }
 
@@ -307,7 +308,16 @@ fun decimal(digits: List<Int>, base: Int): Int {
  * Использовать функции стандартной библиотеки, напрямую и полностью решающие данную задачу
  * (например, str.toInt(base)), запрещается.
  */
-fun decimalFromString(str: String, base: Int): Int = TODO()
+fun decimalFromString(str: String, base: Int): Int {
+    val v = mutableListOf<Int>()
+    for (i in 0 until str.length) {
+        if (str[i].toInt() in 0..9) v.add(str[i].toInt())
+        for (j in 10..35)
+            if (str[i] == (j + 87).toChar()) v.add(j)
+    }
+    println(v)
+    return decimal(v.toList(), base)
+}
 
 /**
  * Сложная
