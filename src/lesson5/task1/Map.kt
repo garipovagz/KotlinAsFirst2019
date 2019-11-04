@@ -90,7 +90,14 @@ fun buildWordSet(text: List<String>): MutableSet<String> {
  *   buildGrades(mapOf("Марат" to 3, "Семён" to 5, "Михаил" to 5))
  *     -> mapOf(5 to listOf("Семён", "Михаил"), 3 to listOf("Марат"))
  */
-fun buildGrades(grades: Map<String, Int>): Map<Int, List<String>> = TODO()
+fun buildGrades(grades: Map<String, Int>): Map<Int, List<String>> {
+    val a = mutableMapOf<Int, MutableList<String>>()
+    for ((student, markExam) in grades) {
+        if (!a.containsKey(markExam)) a[markExam] = mutableListOf(student) else
+            a[markExam]?.plusAssign(student)
+    }
+    return a.toMap()
+}
 
 /**
  * Простая
@@ -123,7 +130,7 @@ fun containsIn(a: Map<String, String>, b: Map<String, String>): Boolean {
  *   subtractOf(a = mutableMapOf("a" to "z"), mapOf("a" to "z"))
  *     -> a changes to mutableMapOf() aka becomes empty
  */
-fun subtractOf(a: MutableMap<String, String>, b: Map<String, String>): Unit {
+fun subtractOf(a: MutableMap<String, String>, b: Map<String, String>) {
     for ((key) in b)
         if ((a.containsKey(key)) and (a[key] == b[key])) a.remove(key)
     return
