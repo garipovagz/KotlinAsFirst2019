@@ -2,6 +2,8 @@
 
 package lesson5.task1
 
+import lesson7.task1.countSubstrings
+
 /**
  * Пример
  *
@@ -216,7 +218,12 @@ fun findCheapestStuff(stuff: Map<String, Pair<String, Double>>, kind: String): S
  * Например:
  *   canBuildFrom(listOf('a', 'b', 'o'), "baobab") -> true
  */
-fun canBuildFrom(chars: List<Char>, word: String): Boolean = TODO()
+fun canBuildFrom(chars: List<Char>, word: String): Boolean {
+    val a = chars.toSet()
+    for (i in word)
+        if (!a.contains(i)) return false
+    return true
+}
 
 /**
  * Средняя
