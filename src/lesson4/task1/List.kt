@@ -3,7 +3,6 @@
 package lesson4.task1
 
 import lesson1.task1.discriminant
-import lesson3.task1.digitNumber
 import kotlin.math.pow
 import kotlin.math.sqrt
 
@@ -177,11 +176,12 @@ fun times(a: List<Int>, b: List<Int>): Int {
  * Значение пустого многочлена равно 0 при любом x.
  */
 fun polynom(p: List<Int>, x: Int): Int {
-    val x1 = x.toDouble()
     var px1 = 0
     if (p.isNotEmpty())
         for (i in 0 until p.size) {
-            val px = p[i] * (x1.pow(i)).toInt()
+            var px = p[i]
+            for (j in 1..i)
+                px *= x
             px1 += px
         }
     return px1
@@ -233,10 +233,7 @@ fun factorize(n: Int): List<Int> {
  * Результат разложения вернуть в виде строки, например 75 -> 3*5*5
  * Множители в результирующей строке должны располагаться по возрастанию.
  */
-fun factorizeToString(n: Int): String {
-    val s = factorize(n)
-    return s.joinToString(separator = "*")
-}
+fun factorizeToString(n: Int): String = factorize(n).joinToString(separator = "*")
 
 /**
  * Средняя
@@ -271,11 +268,10 @@ fun convert(n: Int, base: Int): List<Int> {
 fun convertToString(n: Int, base: Int): String {
     val s = convert(n, base)
     val str = StringBuilder()
-    for (i in 0 until s.size) {
-        if (s[i] in 0..9) str.append(s[i])
-        for (j in 10..35) {
-            if (s[i] == j) str.append((j + 87).toChar())
-        }
+    val nb = 87
+    for (ch in s) {
+        if (ch in 0..9) str.append(ch)
+        if (ch in 10..35) str.append((ch + nb).toChar())
     }
     return str.toString()
 }
@@ -310,10 +306,11 @@ fun decimal(digits: List<Int>, base: Int): Int {
  */
 fun decimalFromString(str: String, base: Int): Int {
     val v = mutableListOf<Int>()
-    for (i in 0 until str.length) {
-        if (str[i].toInt() in 0..9) v.add(str[i].toInt())
-        for (j in 10..35)
-            if (str[i] == (j + 87).toChar()) v.add(j)
+    val a = 48
+    val b = 87
+    for (ch in str) {
+        if (ch.toInt() in 48..57) v.add(ch.toInt() - a)
+        if (ch.toInt() in 97..122) v.add(ch.toInt() - b)
     }
     println(v)
     return decimal(v.toList(), base)

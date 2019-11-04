@@ -80,7 +80,6 @@ fun buildWordSet(text: List<String>): MutableSet<String> {
     return res
 }
 
-
 /**
  * Простая
  *
@@ -103,7 +102,12 @@ fun buildGrades(grades: Map<String, Int>): Map<Int, List<String>> = TODO()
  *   containsIn(mapOf("a" to "z"), mapOf("a" to "z", "b" to "sweet")) -> true
  *   containsIn(mapOf("a" to "z"), mapOf("a" to "zee", "b" to "sweet")) -> false
  */
-fun containsIn(a: Map<String, String>, b: Map<String, String>): Boolean = TODO()
+fun containsIn(a: Map<String, String>, b: Map<String, String>): Boolean {
+    var count = 0
+    for ((key) in a)
+        if ((b.containsKey(key)) and (a[key] == b[key])) count += 1
+    return (a.size == count)
+}
 
 /**
  * Простая
@@ -119,7 +123,11 @@ fun containsIn(a: Map<String, String>, b: Map<String, String>): Boolean = TODO()
  *   subtractOf(a = mutableMapOf("a" to "z"), mapOf("a" to "z"))
  *     -> a changes to mutableMapOf() aka becomes empty
  */
-fun subtractOf(a: MutableMap<String, String>, b: Map<String, String>): Unit = TODO()
+fun subtractOf(a: MutableMap<String, String>, b: Map<String, String>): Unit {
+    for ((key) in b)
+        if ((a.containsKey(key)) and (a[key] == b[key])) a.remove(key)
+    return
+}
 
 /**
  * Простая
@@ -128,7 +136,16 @@ fun subtractOf(a: MutableMap<String, String>, b: Map<String, String>): Unit = TO
  * В выходном списке не должно быть повторяюихся элементов,
  * т. е. whoAreInBoth(listOf("Марат", "Семён, "Марат"), listOf("Марат", "Марат")) == listOf("Марат")
  */
-fun whoAreInBoth(a: List<String>, b: List<String>): List<String> = TODO()
+fun whoAreInBoth(a: List<String>, b: List<String>): List<String> {
+    val c = mutableListOf<String>()
+    val a1 = mutableSetOf<String>()
+    val b1 = mutableSetOf<String>()
+    for (element in a) a1.add(element)
+    for (element in b) b1.add(element)
+    for (e in a1)
+        if (e in b1) c.add(e)
+    return c.toList()
+}
 
 /**
  * Средняя
@@ -147,7 +164,12 @@ fun whoAreInBoth(a: List<String>, b: List<String>): List<String> = TODO()
  *     mapOf("Emergency" to "911", "Police" to "02")
  *   ) -> mapOf("Emergency" to "112, 911", "Police" to "02")
  */
-fun mergePhoneBooks(mapA: Map<String, String>, mapB: Map<String, String>): Map<String, String> = TODO()
+fun mergePhoneBooks(mapA: Map<String, String>, mapB: Map<String, String>): Map<String, String> {
+    val mapA1 = mapA.toMutableMap()
+    for ((k) in mapA1)
+        if (((mapB.containsKey(k)) and (mapA1[k] !== mapB[k]))) mapA1[k] = mapA1[k] + ", " + mapB[k]
+    return mapB + mapA1.toMap()
+}
 
 /**
  * Средняя
