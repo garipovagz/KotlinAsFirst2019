@@ -2,8 +2,6 @@
 
 package lesson5.task1
 
-import lesson7.task1.countSubstrings
-
 /**
  * Пример
  *
@@ -95,8 +93,9 @@ fun buildWordSet(text: List<String>): MutableSet<String> {
 fun buildGrades(grades: Map<String, Int>): Map<Int, List<String>> {
     val a = mutableMapOf<Int, MutableList<String>>()
     for ((student, markExam) in grades) {
-        if (!a.containsKey(markExam)) a[markExam] = mutableListOf(student) else
-            a[markExam]?.plusAssign(student)
+        if (!a.containsKey(markExam)) {
+            a[markExam] = mutableListOf(student)
+        } else a[markExam]?.plusAssign(student)
     }
     return a.toMap()
 }
@@ -114,7 +113,7 @@ fun buildGrades(grades: Map<String, Int>): Map<Int, List<String>> {
 fun containsIn(a: Map<String, String>, b: Map<String, String>): Boolean {
     var count = 0
     for ((key) in a)
-        if ((b.containsKey(key)) and (a[key] == b[key])) count += 1
+        if ((b.containsKey(key)) && (a[key] == b[key])) count++
     return (a.size == count)
 }
 
@@ -137,6 +136,7 @@ fun subtractOf(a: MutableMap<String, String>, b: Map<String, String>) {
         if ((a.containsKey(key)) and (a[key] == b[key])) a.remove(key)
     return
 }
+
 
 /**
  * Простая
@@ -176,7 +176,7 @@ fun whoAreInBoth(a: List<String>, b: List<String>): List<String> {
 fun mergePhoneBooks(mapA: Map<String, String>, mapB: Map<String, String>): Map<String, String> {
     val mapA1 = mapA.toMutableMap()
     for ((k) in mapA1)
-        if (((mapB.containsKey(k)) and (mapA1[k] !== mapB[k]))) mapA1[k] = mapA1[k] + ", " + mapB[k]
+        if (((mapB.containsKey(k)) and (mapA1[k] != mapB[k]))) mapA1[k] = mapA1[k] + ", " + mapB[k]
     return mapB + mapA1.toMap()
 }
 
@@ -190,7 +190,18 @@ fun mergePhoneBooks(mapA: Map<String, String>, mapB: Map<String, String>): Map<S
  *   averageStockPrice(listOf("MSFT" to 100.0, "MSFT" to 200.0, "NFLX" to 40.0))
  *     -> mapOf("MSFT" to 150.0, "NFLX" to 40.0)
  */
-fun averageStockPrice(stockPrices: List<Pair<String, Double>>): Map<String, Double> = TODO()
+fun averageStockPrice(stockPrices: List<Pair<String, Double>>): Map<String, Double> {
+    val b = mutableMapOf<String, Double>()
+    for ((first, second) in stockPrices) {
+        if (b.containsKey(first)) {
+            val c = b[first]
+            if (c != null) {
+                b[first] = (c + second) / 2
+            }
+        } else b[first] = second
+    }
+    return b.toMap()
+}
 
 /**
  * Средняя
@@ -207,7 +218,23 @@ fun averageStockPrice(stockPrices: List<Pair<String, Double>>): Map<String, Doub
  *     "печенье"
  *   ) -> "Мария"
  */
-fun findCheapestStuff(stuff: Map<String, Pair<String, Double>>, kind: String): String? = TODO()
+fun findCheapestStuff(stuff: Map<String, Pair<String, Double>>, kind: String): String? {
+    val a = mutableMapOf<String, Double>()
+    for ((key, value) in stuff)
+        if (value.first == kind) {
+            a[key] = value.second
+        }
+    var elw = 1000000000000000.0
+    var k: String? = ""
+    for ((key) in a) {
+        if (a[key]!! < elw) {
+            elw = a[key]!!
+            k = key
+        }
+    }
+    if (k == "") k = null
+    return k
+}
 
 /**
  * Средняя
@@ -221,7 +248,7 @@ fun findCheapestStuff(stuff: Map<String, Pair<String, Double>>, kind: String): S
 fun canBuildFrom(chars: List<Char>, word: String): Boolean {
     val a = chars.toSet()
     for (i in word)
-        if (!a.contains(i)) return false
+        if ((!a.contains(i)) && (!a.contains(i.toLowerCase())) && (!a.contains(i.toUpperCase()))) return false
     return true
 }
 
@@ -237,7 +264,17 @@ fun canBuildFrom(chars: List<Char>, word: String): Boolean {
  * Например:
  *   extractRepeats(listOf("a", "b", "a")) -> mapOf("a" to 2)
  */
-fun extractRepeats(list: List<String>): Map<String, Int> = TODO()
+fun extractRepeats(list: List<String>): Map<String, Int> {
+    val a = mutableMapOf<String, Int>()
+    val b = mutableMapOf<String, Int>()
+    for (i in list)
+        if (a.contains(i)) a[i] = a[i]!! + 1
+        else a[i] = 1
+    for ((key) in a)
+        if (a[key]!! > 1)
+            b[key] = a[key]!!
+    return b
+}
 
 /**
  * Средняя
