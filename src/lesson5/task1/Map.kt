@@ -192,13 +192,22 @@ fun mergePhoneBooks(mapA: Map<String, String>, mapB: Map<String, String>): Map<S
  */
 fun averageStockPrice(stockPrices: List<Pair<String, Double>>): Map<String, Double> {
     val b = mutableMapOf<String, Double>()
+    val d = mutableMapOf<String, Int>()
+    for ((key) in stockPrices) {
+        if (d.containsKey(key))
+            d[key] = d[key]!! + 1
+        else d[key] = 1
+    }
     for ((first, second) in stockPrices) {
         if (b.containsKey(first)) {
             val c = b[first]
             if (c != null) {
-                b[first] = (c + second) / 2
+                b[first] = (c + second)
             }
         } else b[first] = second
+    }
+    for ((name) in d) {
+        b[name] = b[name]!! / d[name]!!
     }
     return b.toMap()
 }
@@ -225,14 +234,14 @@ fun findCheapestStuff(stuff: Map<String, Pair<String, Double>>, kind: String): S
             a[key] = value.second
         }
     var elw = 1000000000000000.0
-    var k: String? = ""
+    var k: String? = "0"
     for ((key) in a) {
         if (a[key]!! < elw) {
             elw = a[key]!!
             k = key
         }
     }
-    if (k == "") k = null
+    if (k == "0") k = null
     return k
 }
 
@@ -285,7 +294,26 @@ fun extractRepeats(list: List<String>): Map<String, Int> {
  * Например:
  *   hasAnagrams(listOf("тор", "свет", "рот")) -> true
  */
-fun hasAnagrams(words: List<String>): Boolean = TODO()
+fun hasAnagrams(words: List<String>): Boolean {
+    val b = mutableMapOf<String, List<Char>>()
+    for (w in words) {
+        val c = mutableListOf<Char>()
+        for (ch in w)
+            c.add(ch)
+        b[w] = c
+    }
+    for ((key, value) in b) {
+        for (w in words)
+            if (key != w) {
+                var d = 0
+                for (ch in w)
+                    if (value.contains(ch)) d++
+                if (d == w.length) return true
+                break
+            }
+    }
+    return false
+}
 
 /**
  * Сложная

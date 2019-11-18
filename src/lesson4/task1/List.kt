@@ -1,6 +1,7 @@
 @file:Suppress("UNUSED_PARAMETER", "ConvertCallChainIntoSequence")
 
 package lesson4.task1
+
 import lesson1.task1.discriminant
 import kotlin.math.pow
 import kotlin.math.sqrt
@@ -328,13 +329,26 @@ fun roman(n: Int): String {
     for (i in 1..count) {
         val p = 10.0.pow(count - i).toInt()
         val digit = (n1 / p) * p
-        if (((digit % (5 * p) < 4 * p) && (digit > 5 * p)) or (digit % (5 * p) == 0)) {
-            when (p) {
-                1 -> str.append('V')
-                10 -> str.append('L')
-                100 -> str.append('D')
+        if (n1.toString().length == digit.toString().length) {
+            if (((digit % (5 * p) < 4 * p) && (digit > 5 * p))
+                or (digit % (5 * p) == 0)
+            ) {
+                when (p) {
+                    1 -> str.append('V')
+                    10 -> str.append('L')
+                    100 -> str.append('D')
+                }
+                if (digit > 5 * p)
+                    for (k in 1..(digit % (5 * p)) / p) {
+                        when (p) {
+                            1 -> str.append('I')
+                            10 -> str.append('X')
+                            100 -> str.append('C')
+                            1000 -> str.append('M')
+                        }
+                    }
             }
-            if (digit > 5 * p)
+            if ((digit % (5 * p) < 4 * p) && (digit < 5 * p)) {
                 for (k in 1..(digit % (5 * p)) / p) {
                     when (p) {
                         1 -> str.append('I')
@@ -343,40 +357,31 @@ fun roman(n: Int): String {
                         1000 -> str.append('M')
                     }
                 }
-        }
-        if ((digit % (5 * p) < 4 * p) && (digit < 5 * p)) {
-            for (k in 1..(digit % (5 * p)) / p) {
+            }
+            if (digit % (5 * p) == 4 * p) {
                 when (p) {
                     1 -> str.append('I')
                     10 -> str.append('X')
                     100 -> str.append('C')
                     1000 -> str.append('M')
                 }
+                if (digit == 4 * p)
+                    when (p) {
+                        1 -> str.append('V')
+                        10 -> str.append('L')
+                        100 -> str.append('D')
+                    }
+                if (digit == 9 * p)
+                    when (p) {
+                        1 -> str.append("X")
+                        10 -> str.append('C')
+                        100 -> str.append('M')
+                    }
             }
+            n12 += digit
+            n1 = n - n12
+            if (n1 == 0) break
         }
-        if (digit % (5 * p) == 4 * p) {
-            when (p) {
-                1 -> str.append('I')
-                10 -> str.append('X')
-                100 -> str.append('C')
-                1000 -> str.append('M')
-            }
-            if (digit == 4 * p)
-                when (p) {
-                    1 -> str.append('V')
-                    10 -> str.append('L')
-                    100 -> str.append('D')
-                }
-            if (digit == 9 * p)
-                when (p) {
-                    1 -> str.append("X")
-                    10 -> str.append('C')
-                    100 -> str.append('M')
-                }
-        }
-        n12 += digit
-        n1 = n - n12
-        if (n1 == 0) break
     }
     return str.toString()
 }
