@@ -268,7 +268,7 @@ class Tests {
     fun hasAnagrams() {
         assertFalse(hasAnagrams(emptyList()))
         assertTrue(hasAnagrams(listOf("рот", "свет", "тор")))
-        assertFalse(hasAnagrams(listOf("рот", "свет", "код", "дверь")))
+        assertTrue(hasAnagrams(listOf("", "")))
     }
 
     @Test
@@ -336,6 +336,15 @@ class Tests {
                 mapOf("Кубок" to (500 to 2000), "Слиток" to (1000 to 5000)),
                 450
             )
+
+        )
+        assertEquals(
+            setOf("Слиток", "kzk"),
+            bagPacking(
+                mapOf("Кубок" to (300 to 2000), "Слиток" to (200 to 5000), "kzk" to (300 to 3000)),
+                500
+            )
+
         )
     }
 

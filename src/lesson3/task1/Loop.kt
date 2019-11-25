@@ -320,7 +320,7 @@ fun squareSequenceDigit(n: Int): Int {
         countD += count
         if (countD >= n) break
     }
-    if (countD > n)
+    if (countD != n)
         for (i in 1..countD - n) num /= 10
     return num % 10
 }
@@ -344,7 +344,7 @@ fun fibSequenceDigit(n: Int): Int {
         countD += count
         if (countD >= n) break
     }
-    if (countD > n) for (i in 1..countD - n)
+    if (countD != n) for (i in 1..countD - n)
         num /= 10
     return num % 10
 }

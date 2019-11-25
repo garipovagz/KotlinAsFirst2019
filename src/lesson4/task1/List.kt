@@ -321,6 +321,30 @@ fun decimalFromString(str: String, base: Int): Int {
  * 90 = XC, 100 = C, 400 = CD, 500 = D, 900 = CM, 1000 = M.
  * Например: 23 = XXIII, 44 = XLIV, 100 = C
  */
+fun r1(p: Int): Char =
+    when (p) {
+        1 -> 'I'
+        10 -> 'X'
+        100 -> 'C'
+        1000 -> 'M'
+        else -> ' '
+    }
+
+fun r2(p: Int): Char =
+    when (p) {
+        1 -> 'V'
+        10 -> 'L'
+        100 -> 'D'
+        else -> ' '
+    }
+fun r3(p: Int): Char =
+    when (p) {
+        1 -> 'X'
+        10 -> 'C'
+        100 -> 'M'
+        else -> ' '
+    }
+
 fun roman(n: Int): String {
     val str = StringBuilder()
     val count = n.toString().length
@@ -329,59 +353,36 @@ fun roman(n: Int): String {
     for (i in 1..count) {
         val p = 10.0.pow(count - i).toInt()
         val digit = (n1 / p) * p
-        if (n1.toString().length == digit.toString().length) {
+        if (n1.toString().length == digit.toString().length && digit != 0) {
             if (((digit % (5 * p) < 4 * p) && (digit > 5 * p))
                 or (digit % (5 * p) == 0)
             ) {
-                when (p) {
-                    1 -> str.append('V')
-                    10 -> str.append('L')
-                    100 -> str.append('D')
-                }
+                str.append(r2(p))
                 if (digit > 5 * p)
                     for (k in 1..(digit % (5 * p)) / p) {
-                        when (p) {
-                            1 -> str.append('I')
-                            10 -> str.append('X')
-                            100 -> str.append('C')
-                            1000 -> str.append('M')
-                        }
+                        str.append(r1(p))
                     }
             }
             if ((digit % (5 * p) < 4 * p) && (digit < 5 * p)) {
                 for (k in 1..(digit % (5 * p)) / p) {
-                    when (p) {
-                        1 -> str.append('I')
-                        10 -> str.append('X')
-                        100 -> str.append('C')
-                        1000 -> str.append('M')
-                    }
+                    str.append(r1(p))
                 }
             }
             if (digit % (5 * p) == 4 * p) {
-                when (p) {
-                    1 -> str.append('I')
-                    10 -> str.append('X')
-                    100 -> str.append('C')
-                    1000 -> str.append('M')
+                str.append(r1(p))
+                if (digit == 4 * p) {
+                    str.append(r2(p))
                 }
-                if (digit == 4 * p)
-                    when (p) {
-                        1 -> str.append('V')
-                        10 -> str.append('L')
-                        100 -> str.append('D')
-                    }
-                if (digit == 9 * p)
-                    when (p) {
-                        1 -> str.append("X")
-                        10 -> str.append('C')
-                        100 -> str.append('M')
-                    }
+                if (digit == 9 * p) {
+                    str.append(r3(p))
+                }
+
             }
-            n12 += digit
-            n1 = n - n12
-            if (n1 == 0) break
         }
+        n12 += digit
+        n1 = n - n12
+        if (n1 == 0) break
+
     }
     return str.toString()
 }
