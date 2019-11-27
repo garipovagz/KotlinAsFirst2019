@@ -353,26 +353,23 @@ fun hasAnagrams(words: List<String>): Boolean {
  *          "Mikhail" to setOf("Sveta", "Marat")
  *        )
  */
+fun prr(f: MutableMap<String, Set<String>>): MutableMap<String, Set<String>> = TODO()
+
 fun propagateHandshakes(friends: Map<String, Set<String>>): Map<String, Set<String>> {
-    val friend = friends.toMutableMap()
+    val f = friends.toMutableMap()
     for ((_, names) in friends) {
         for (el in names)
-            if (!friend.containsKey(el)) friend[el] = mutableSetOf()
+            if (!f.containsKey(el)) f[el] = mutableSetOf()
     }
-    for ((name, _) in friend) {
-        if (friend[name] != null) {
-            for (man in friend[name]!!) {
-                if (friend[man] != null) {
-                    for (human in friend[man]!!)
-                        if (!friend[name]?.contains(human)!!) {
-                            friend[name] = friend[name]!! + human + friend[human]!!
-                        }
-                }
+    for ((name, _) in f) {
+        for (i in 1..f.size) {
+            for (k in f[name]!!) {
+                f[name] = f[name]!! + k + f[k]!!
             }
         }
-        if (friend[name]?.contains(name)!!) friend[name] = friend[name]!! - name
+        if (f[name]?.contains(name)!!) f[name] = f[name]!! - name
     }
-    return friend.toMap()
+    return f.toMap()
 }
 
 /**

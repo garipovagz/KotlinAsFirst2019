@@ -269,6 +269,7 @@ class Tests {
         assertFalse(hasAnagrams(emptyList()))
         assertTrue(hasAnagrams(listOf("рот", "свет", "тор")))
         assertTrue(hasAnagrams(listOf("", "")))
+        assertFalse(hasAnagrams(listOf("")))
     }
 
     @Test
@@ -321,6 +322,25 @@ class Tests {
                 )
             )
         )
+        assertEquals(
+            mapOf(
+                "0" to setOf("1"),
+                "1" to setOf(),
+                "2" to setOf("3", "19f", "0", "1"),
+                "3" to setOf("19f", "0", "1"),
+                "19f" to setOf("0", "1")
+            ),
+            propagateHandshakes(
+                mapOf(
+                    "0" to setOf("1"),
+                    "1" to setOf(),
+                    "2" to setOf("3"),
+                    "3" to setOf("19f"),
+                    "19f" to setOf("0")
+                )
+            )
+        )
+
     }
 
     @Test
