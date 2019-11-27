@@ -2,8 +2,6 @@
 
 package lesson5.task1
 
-import kotlinx.html.P
-
 /**
  * Пример
  *
@@ -139,7 +137,7 @@ fun containsIn(a: Map<String, String>, b: Map<String, String>): Boolean {
  */
 fun subtractOf(a: MutableMap<String, String>, b: Map<String, String>) {
     for ((key) in b) {
-        if ((a.containsKey(key)) and (a[key] == b[key])) {
+        if ((a.containsKey(key)) && (a[key] == b[key])) {
             a.remove(key)
         }
     }
@@ -184,7 +182,7 @@ fun whoAreInBoth(a: List<String>, b: List<String>): List<String> {
 fun mergePhoneBooks(mapA: Map<String, String>, mapB: Map<String, String>): Map<String, String> {
     val mapA1 = mapA.toMutableMap()
     for ((k) in mapA1) {
-        if (((mapB.containsKey(k)) and (mapA1[k] != mapB[k]))) {
+        if (((mapB.containsKey(k)) && (mapA1[k] != mapB[k]))) {
             mapA1[k] = mapA1[k] + ", " + mapB[k]
         }
     }
@@ -242,21 +240,21 @@ fun averageStockPrice(stockPrices: List<Pair<String, Double>>): Map<String, Doub
  *   ) -> "Мария"
  */
 fun findCheapestStuff(stuff: Map<String, Pair<String, Double>>, kind: String): String? {
-    val a = mutableMapOf<String, Double>()
+    val stock = mutableMapOf<String, Double>()
     for ((key, value) in stuff)
         if (value.first == kind) {
-            a[key] = value.second
+            stock[key] = value.second
         }
-    var elw = Double.MAX_VALUE
-    var k: String? = "0"
-    for ((key) in a) {
-        if ((a[key] ?: 0.0) < elw) {
-            elw = a[key] ?: 0.0
-            k = key
+    var price = Double.MAX_VALUE
+    var name: String? = "0"
+    for ((key) in stock) {
+        if ((stock[key] ?: 0.0) < price) {
+            price = stock[key] ?: 0.0
+            name = key
         }
     }
-    if (k == "0") k = null
-    return k
+    if (name == "0") name = null
+    return name
 }
 
 /**
@@ -291,11 +289,11 @@ fun extractRepeats(list: List<String>): Map<String, Int> {
     val a = mutableMapOf<String, Int>()
     val b = mutableMapOf<String, Int>()
     for (i in list)
-        if (a.contains(i)) a[i] = a[i]!! + 1
+        if (a.contains(i)) a[i] = (a[i] ?: 0) + 1
         else a[i] = 1
     for ((key) in a)
-        if (a[key]!! > 1)
-            b[key] = a[key]!!
+        if ((a[key] ?: 0) > 1)
+            b[key] = a[key] ?: 0
     return b
 }
 
@@ -356,21 +354,25 @@ fun hasAnagrams(words: List<String>): Boolean {
  *        )
  */
 fun propagateHandshakes(friends: Map<String, Set<String>>): Map<String, Set<String>> {
-    val a: Map<String, Set<String>>
-    val b = friends.toMutableMap()
-    for ((_, value) in friends) {
-        for (el in value)
-            if (!b.containsKey(el)) b[el] = mutableSetOf()
+    val friend = friends.toMutableMap()
+    for ((_, names) in friends) {
+        for (el in names)
+            if (!friend.containsKey(el)) friend[el] = mutableSetOf()
     }
-    a = b
-    for ((key, _) in b) {
-        for ((l, _) in a)
-            if (b[key]?.contains(l) != false) {
-                b[key] = (b[key] ?: a[l])?.plus(a[l]!!)!!
-                if (a[l]?.contains(key)!!) b[key] = b[key]?.minus(key)!!
+    for ((name, _) in friend) {
+        if (friend[name] != null) {
+            for (man in friend[name]!!) {
+                if (friend[man] != null) {
+                    for (human in friend[man]!!)
+                        if (!friend[name]?.contains(human)!!) {
+                            friend[name] = friend[name]!! + human + friend[human]!!
+                        }
+                }
             }
+        }
+        if (friend[name]?.contains(name)!!) friend[name] = friend[name]!! - name
     }
-    return b.toMap()
+    return friend.toMap()
 }
 
 /**
@@ -391,13 +393,24 @@ fun propagateHandshakes(friends: Map<String, Set<String>>): Map<String, Set<Stri
  *   findSumOfTwo(listOf(1, 2, 3), 6) -> Pair(-1, -1)
  */
 fun findSumOfTwo(list: List<Int>, number: Int): Pair<Int, Int> {
+    val count = list.size
+    val digits = mutableMapOf<Int, Int>()
     var a = -1
     var b = -1
-    for (el in list) {
-        if (list.contains(number - el) && el != number - el) {
-            a = list.indexOf(el)
-            b = list.indexOf(number - el)
-            break
+    for (i in 0 until count) {
+        digits[i] = list[i]
+    }
+    for ((key, value) in digits) {
+        if (digits.containsValue(number - value)) {
+            if (key != list.indexOf(number - value)) {
+                a = key
+                b = list.indexOf(number - value)
+                if (a > b) {
+                    val n = a
+                    a = b
+                    b = n
+                }
+            }
         }
     }
     return Pair(a, b)
@@ -424,36 +437,5 @@ fun findSumOfTwo(list: List<Int>, number: Int): Pair<Int, Int> {
  *     450
  *   ) -> emptySet()
  */
-fun treasureVal(sum: Pair<Int, Int>): Int = sum.first * sum.second
 
-fun bagPacking(treasures: Map<String, Pair<Int, Int>>, capacity: Int): Set<String> {
-    val l = mutableSetOf<String>()
-    var s = 0
-    var max = 0
-    var max2 = 0
-    var n: String? = ""
-    var n1: String? = ""
-    for ((name, value) in treasures) {
-        if (value.first <= capacity) {
-            if (treasureVal(value) >= max) {
-                max = treasureVal(value)
-                n = name
-                s = value.first
-            }
-        }
-        if (s < capacity) {
-            for ((nl, vl) in treasures)
-                if (vl.first <= capacity - s && treasureVal(value) in max2 until max) {
-                    max2 = treasureVal(value)
-                    n1 = nl
-                }
-
-        }
-    }
-    if (n != null && n != "") {
-        l.add(n)
-    }
-    if (n1 != null && n1 != "")
-        l.add(n1)
-    return l.toSet()
-}
+fun bagPacking(treasures: Map<String, Pair<Int, Int>>, capacity: Int): Set<String> = TODO()

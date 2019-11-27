@@ -301,11 +301,32 @@ class Tests {
                 )
             )
         )
+        assertEquals(
+            mapOf(
+                "1" to setOf("0"),
+                "0" to setOf(),
+                "11f" to setOf("3c4", "1", "0"),
+                "135" to setOf("1", "0", "11f", "2", "3c4"),
+                "2" to setOf("1", "0"),
+                "3c4" to setOf("1", "0")
+            ),
+            propagateHandshakes(
+                mapOf(
+                    "1" to setOf("0"),
+                    "0" to setOf(),
+                    "11f" to setOf("3c4"),
+                    "135" to setOf("1", "0", "11f", "2"),
+                    "2" to setOf("1"),
+                    "3c4" to setOf("1")
+                )
+            )
+        )
     }
 
     @Test
     @Tag("Hard")
     fun findSumOfTwo() {
+
         assertEquals(
             Pair(-1, -1),
             findSumOfTwo(emptyList(), 1)
@@ -317,6 +338,14 @@ class Tests {
         assertEquals(
             Pair(-1, -1),
             findSumOfTwo(listOf(1, 2, 3), 6)
+        )
+        assertEquals(
+            Pair(0, 1),
+            findSumOfTwo(listOf(0, 0), 0)
+        )
+        assertEquals(
+            Pair(0, 1),
+            findSumOfTwo(listOf(1, 1), 2)
         )
     }
 
@@ -344,7 +373,25 @@ class Tests {
                 mapOf("Кубок" to (300 to 2000), "Слиток" to (200 to 5000), "kzk" to (300 to 3000)),
                 500
             )
+        )
+        assertEquals(
+            setOf("Слиток", "kzk", "ll"),
+            bagPacking(
+                mapOf(
+                    "Кубок" to (300 to 2000),
+                    "Слиток" to (200 to 5000),
+                    "kzk" to (300 to 3000),
+                    "ll" to (100 to 6000)
+                ),
+                600
+            )
 
+        )
+        assertEquals(
+            setOf("1", "0"),
+            bagPacking(
+                mapOf("0" to (1 to 1), "1" to (1 to 1)), 2
+            )
         )
     }
 
