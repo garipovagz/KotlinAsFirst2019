@@ -307,23 +307,14 @@ fun extractRepeats(list: List<String>): Map<String, Int> {
  *   hasAnagrams(listOf("тор", "свет", "рот")) -> true
  */
 fun hasAnagrams(words: List<String>): Boolean {
-    val b = mutableMapOf<String, List<Char>>()
+    val a = mutableSetOf<Char>()
     for (w in words) {
-        val c = mutableListOf<Char>()
-        for (ch in w)
-            c.add(ch)
-        b[w] = c
-    }
-    for ((key, _) in b) {
-        for (w in words) {
-            if (w.length == key.length) {
-                var k = 0
-                for (ch in w) {
-                    if (!b[w]?.contains(ch)!!) break
-                    else k += 1
-                }
-                if (k == w.length) return true
-            }
+        for (ch in w) a.add(ch)
+        for (s in words) {
+            var k = 0
+            for (l in s)
+                if (l in a) k++
+            if (k == s.length) return true
         }
     }
     return false
@@ -353,18 +344,16 @@ fun hasAnagrams(words: List<String>): Boolean {
  *          "Mikhail" to setOf("Sveta", "Marat")
  *        )
  */
-fun prr(f: MutableMap<String, Set<String>>): MutableMap<String, Set<String>> = TODO()
-
 fun propagateHandshakes(friends: Map<String, Set<String>>): Map<String, Set<String>> {
     val f = friends.toMutableMap()
     for ((_, names) in friends) {
-        for (el in names)
-            if (!f.containsKey(el)) f[el] = mutableSetOf()
+        for (frname in names)
+            if (!f.containsKey(frname)) f[frname] = mutableSetOf()
     }
     for ((name, _) in f) {
         for (i in 1..f.size) {
-            for (k in f[name]!!) {
-                f[name] = f[name]!! + k + f[k]!!
+            for (freind in f[name]!!) {
+                f[name] = f[name]!! + freind + f[freind]!!
             }
         }
         if (f[name]?.contains(name)!!) f[name] = f[name]!! - name
@@ -390,25 +379,24 @@ fun propagateHandshakes(friends: Map<String, Set<String>>): Map<String, Set<Stri
  *   findSumOfTwo(listOf(1, 2, 3), 6) -> Pair(-1, -1)
  */
 fun findSumOfTwo(list: List<Int>, number: Int): Pair<Int, Int> {
-    val count = list.size
-    val digits = mutableMapOf<Int, Int>()
     var a = -1
     var b = -1
-    for (i in 0 until count) {
-        digits[i] = list[i]
-    }
-    for ((key, value) in digits) {
-        if (digits.containsValue(number - value)) {
-            if (key != list.indexOf(number - value)) {
-                a = key
-                b = list.indexOf(number - value)
-                if (a > b) {
-                    val n = a
-                    a = b
-                    b = n
-                }
-            }
+    var i = 0
+    while (i != list.size) {
+        if (number - list[i] in list) {
+            a = i
+            b = list.indexOf(number - list[i])
         }
+        i++
+    }
+    if (a == b && a != -1 && b != -1) {
+        a = -1
+        b = -1
+    }
+    if (a > b) {
+        val c = a
+        a = b
+        b = c
     }
     return Pair(a, b)
 }

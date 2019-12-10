@@ -41,6 +41,7 @@ class Tests {
         assertEquals("03.04.2011", dateStrToDigit("3 апреля 2011"))
         assertEquals("", dateStrToDigit("32 сентября 2011"))
         assertEquals("", dateStrToDigit("29 февраля 1993"))
+        assertEquals("", dateStrToDigit("ab.12.akak"))
     }
 
     @Test
@@ -61,10 +62,11 @@ class Tests {
         assertEquals("+79211234567", flattenPhoneNumber("+7 (921) 123-45-67"))
         assertEquals("123456798", flattenPhoneNumber("12 --  34- 5 -- 67 -98"))
         assertEquals("+12345", flattenPhoneNumber("+12 (3) 4-5"))
-        assertEquals("", flattenPhoneNumber("+12 () 4-5"))
+        assertEquals("", flattenPhoneNumber("ab-123"))
         assertEquals("+425667", flattenPhoneNumber("+42 56 -- 67"))
         assertEquals("+42566789", flattenPhoneNumber("+42(56 -- 67)89"))
-        assertEquals("", flattenPhoneNumber("ab-123"))
+        assertEquals("", flattenPhoneNumber("+12 () 4-5"))
+        assertEquals("", flattenPhoneNumber("134_874+"))
         assertEquals("", flattenPhoneNumber("134_+874"))
     }
 
@@ -74,16 +76,17 @@ class Tests {
         assertEquals(717, bestLongJump("706 % - 717 - 703"))
         assertEquals(-1, bestLongJump("% - - % -"))
         assertEquals(754, bestLongJump("700 717 707 % 754"))
+        assertEquals(-1, bestLongJump("700  & 700"))
         assertEquals(-1, bestLongJump("700 + 700"))
-
     }
 
     @Test
     @Tag("Hard")
     fun bestHighJump() {
-        assertEquals(226, bestHighJump("226 +"))
+        assertEquals(240, bestHighJump("226 + 240 +"))
         assertEquals(-1, bestHighJump("???"))
         assertEquals(230, bestHighJump("220 + 224 %+ 228 %- 230 + 232 %%- 234 %"))
+        assertEquals(-1, bestHighJump("220 % 224 % 228 % 230  232 %% 234 %"))
     }
 
     @Test
@@ -113,8 +116,8 @@ class Tests {
     @Tag("Hard")
     fun mostExpensive() {
         assertEquals("", mostExpensive(""))
-        assertEquals("Курица", mostExpensive("Хлеб 39.9; Молоко 62.5; Курица 184.0; Конфеты 89.9"))
         assertEquals("Вино", mostExpensive("Вино 255.0"))
+        assertEquals("Курица", mostExpensive("Хлеб 39.9; Молоко 62.5; Курица 184.0; Конфеты 89.9"))
     }
 
     @Test

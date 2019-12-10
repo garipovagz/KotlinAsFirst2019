@@ -306,10 +306,9 @@ fun decimal(digits: List<Int>, base: Int): Int {
 fun decimalFromString(str: String, base: Int): Int {
     val v = mutableListOf<Int>()
     for (ch in str) {
-        if (ch.toInt() in 48..57) v.add(ch - '0')
-        if (ch.toInt() in 97..122) v.add(ch - ('a' - 10))
+        if (ch.toInt() in '0'.toInt()..'9'.toInt()) v.add(ch - '0')
+        if (ch.toInt() in 'a'.toInt()..'z'.toInt()) v.add(ch - ('a' - 10))
     }
-    println(v)
     return decimal(v.toList(), base)
 }
 
@@ -321,7 +320,7 @@ fun decimalFromString(str: String, base: Int): Int {
  * 90 = XC, 100 = C, 400 = CD, 500 = D, 900 = CM, 1000 = M.
  * Например: 23 = XXIII, 44 = XLIV, 100 = C
  */
-fun case1(p: Int): Char =
+fun one(p: Int): Char =
     when (p) {
         1 -> 'I'
         10 -> 'X'
@@ -330,19 +329,11 @@ fun case1(p: Int): Char =
         else -> ' '
     }
 
-fun case2(p: Int): Char =
+fun five(p: Int): Char =
     when (p) {
         1 -> 'V'
         10 -> 'L'
         100 -> 'D'
-        else -> ' '
-    }
-
-fun case3(p: Int): Char =
-    when (p) {
-        1 -> 'X'
-        10 -> 'C'
-        100 -> 'M'
         else -> ' '
     }
 
@@ -358,24 +349,24 @@ fun roman(n: Int): String {
             if (((digit % (5 * p) < 4 * p) && (digit > 5 * p))
                 or (digit % (5 * p) == 0)
             ) {
-                str.append(case2(p))
+                str.append(five(p))
                 if (digit > 5 * p)
                     for (k in 1..(digit % (5 * p)) / p) {
-                        str.append(case1(p))
+                        str.append(one(p))
                     }
             }
             if ((digit % (5 * p) < 4 * p) && (digit < 5 * p)) {
                 for (k in 1..(digit % (5 * p)) / p) {
-                    str.append(case1(p))
+                    str.append(one(p))
                 }
             }
             if (digit % (5 * p) == 4 * p) {
-                str.append(case1(p))
+                str.append(one(p))
                 if (digit == 4 * p) {
-                    str.append(case2(p))
+                    str.append(five(p))
                 }
                 if (digit == 9 * p) {
-                    str.append((case3(p)))
+                    str.append((one(p * 10)))
                 }
 
             }

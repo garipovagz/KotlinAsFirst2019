@@ -268,8 +268,10 @@ class Tests {
     fun hasAnagrams() {
         assertFalse(hasAnagrams(emptyList()))
         assertTrue(hasAnagrams(listOf("рот", "свет", "тор")))
+        assertFalse(hasAnagrams(listOf("рот", "свет")))
         assertTrue(hasAnagrams(listOf("", "")))
         assertFalse(hasAnagrams(listOf("")))
+
     }
 
     @Test
@@ -362,6 +364,10 @@ class Tests {
         assertEquals(
             Pair(0, 1),
             findSumOfTwo(listOf(0, 0), 0)
+        )
+        assertEquals(
+            Pair(0, 3),
+            findSumOfTwo(listOf(0, 3, 5, 0), 0)
         )
         assertEquals(
             Pair(0, 1),
