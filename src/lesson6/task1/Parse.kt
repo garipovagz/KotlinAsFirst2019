@@ -80,7 +80,7 @@ fun dateStrToDigit(str: String): String {
     val year = parts[2]
     if (parts[0].toIntOrNull() == null || parts[2].toIntOrNull() == null) return ""
     month = when (month) {
-        "январь" -> "1"
+        "января" -> "1"
         "февраля" -> "2"
         "марта" -> "3"
         "апреля" -> "4"
@@ -110,11 +110,12 @@ fun dateStrToDigit(str: String): String {
  */
 fun dateDigitToStr(digital: String): String {
     val parts = digital.split(".").toMutableList()
+    if (parts.size != 3) return ""
     val day = parts[0]
     var month = parts[1]
     val year = parts[2]
     if (day.toIntOrNull() != null && month.toIntOrNull() != null && year.toIntOrNull() != null &&
-        parts.size == 3 && daysInMonth(month.toInt(), year.toInt()) >= day.toInt()
+        daysInMonth(month.toInt(), year.toInt()) >= day.toInt()
     ) {
         month = when (month) {
             "01" -> "января"
@@ -160,6 +161,7 @@ fun flattenPhoneNumber(phone: String): String {
     } else {
         return ""
     }
+    if (str[0].toString() == "0") return ""
     return str.toString()
 }
 
@@ -229,6 +231,8 @@ fun plusMinus(expression: String): Int {
     val str = expression.split(" ")
     var result = str[0].toInt()
     var i = 1
+    val reg = Regex("""^\+|^-|-\s-|\+\s-|-\s\+|\+\s\+""")
+    if (reg.containsMatchIn(expression)) throw IllegalArgumentException()
     while (i != str.size) {
         when {
             str[i] == "+" -> result += str[i + 1].toInt()
@@ -237,8 +241,6 @@ fun plusMinus(expression: String): Int {
         }
         i += 2
     }
-    val reg = Regex("""^\+|^-|-\s-|\+\s-|-\s\+|\+\s\+""")
-    if (reg.containsMatchIn(expression)) throw IllegalArgumentException()
     return result
 }
 
@@ -263,7 +265,7 @@ fun firstDuplicateIndex(str: String): Int {
         index += string[i].length + 1
         i += 1
     }
-    if (index != -1) {
+    if (index != -1 || i == 0) {
         index += 1
     }
     return index
@@ -292,7 +294,7 @@ fun mostExpensive(description: String): String {
         }
     }
     for ((k, v) in a)
-        if (v > max && v >= 0.0) {
+        if (v >= max || v == 0.0) {
             max = v
             name = k
         }

@@ -42,11 +42,14 @@ class Tests {
         assertEquals("", dateStrToDigit("32 сентября 2011"))
         assertEquals("", dateStrToDigit("29 февраля 1993"))
         assertEquals("", dateStrToDigit("ab.12.akak"))
+        assertEquals("07.12.2011", dateStrToDigit("07 декабря 2011"))
+        assertEquals("01.01.1", dateStrToDigit("01 января 1"))
     }
 
     @Test
     @Tag("Normal")
     fun dateDigitToStr() {
+        assertEquals("", dateDigitToStr("/.ko.i"))
         assertEquals("15 июля 2016", dateDigitToStr("15.07.2016"))
         assertEquals("", dateDigitToStr("01.02.20.19"))
         assertEquals("", dateDigitToStr("28.00.2000"))
@@ -68,6 +71,7 @@ class Tests {
         assertEquals("", flattenPhoneNumber("+12 () 4-5"))
         assertEquals("", flattenPhoneNumber("134_874+"))
         assertEquals("", flattenPhoneNumber("134_+874"))
+        assertEquals("", flattenPhoneNumber(" --+0-"))
     }
 
     @Test
@@ -96,6 +100,7 @@ class Tests {
         assertEquals(4, plusMinus("2 + 2"))
         assertEquals(6, plusMinus("2 + 31 - 40 + 13"))
         assertEquals(-1, plusMinus("0 - 1"))
+        assertThrows(IllegalArgumentException::class.java) { plusMinus("") }
         assertThrows(IllegalArgumentException::class.java) { plusMinus("+2") }
         assertThrows(IllegalArgumentException::class.java) { plusMinus("+ 4") }
         assertThrows(IllegalArgumentException::class.java) { plusMinus("4 - -2") }
@@ -106,6 +111,7 @@ class Tests {
     @Test
     @Tag("Hard")
     fun firstDuplicateIndex() {
+        assertEquals(0, firstDuplicateIndex("a a"))
         assertEquals(-1, firstDuplicateIndex("Привет"))
         assertEquals(9, firstDuplicateIndex("Он пошёл в в школу"))
         assertEquals(40, firstDuplicateIndex("Яблоко упало на ветку с ветки оно упало на на землю"))
@@ -116,6 +122,7 @@ class Tests {
     @Tag("Hard")
     fun mostExpensive() {
         assertEquals("", mostExpensive(""))
+        assertEquals("a", mostExpensive("a 0"))
         assertEquals("Вино", mostExpensive("Вино 255.0"))
         assertEquals("Курица", mostExpensive("Хлеб 39.9; Молоко 62.5; Курица 184.0; Конфеты 89.9"))
     }
