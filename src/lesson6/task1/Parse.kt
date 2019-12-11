@@ -161,7 +161,7 @@ fun flattenPhoneNumber(phone: String): String {
     } else {
         return ""
     }
-    if (str[0].toString() == "0") return ""
+    if (str.toString().isNotEmpty() && str[0].toString() == "0") return ""
     return str.toString()
 }
 
@@ -257,13 +257,18 @@ fun firstDuplicateIndex(str: String): Int {
     val string = str.split(" ")
     var i = 0
     var index = -1
+    var k = 0
     if (string.size < 2) return index
     while (i != string.size - 1) {
         if (string[i].toUpperCase() == string[i + 1].toUpperCase()) {
+            k++
             break
         }
         index += string[i].length + 1
         i += 1
+    }
+    if (k != 1) {
+        index = -1
     }
     if (index != -1 || i == 0) {
         index += 1
@@ -283,7 +288,7 @@ fun firstDuplicateIndex(str: String): Int {
  * Все цены должны быть больше либо равны нуля.
  */
 fun mostExpensive(description: String): String {
-    var max = Double.MIN_VALUE
+    var max = 0.0
     val a = mutableMapOf<String, Double>()
     var name = ""
     val str = description.split("; ")
@@ -294,7 +299,7 @@ fun mostExpensive(description: String): String {
         }
     }
     for ((k, v) in a)
-        if (v >= max || v == 0.0) {
+        if (v >= max) {
             max = v
             name = k
         }

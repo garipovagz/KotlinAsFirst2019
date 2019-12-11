@@ -62,6 +62,7 @@ class Tests {
     @Test
     @Tag("Normal")
     fun flattenPhoneNumber() {
+        assertEquals("", flattenPhoneNumber(" "))
         assertEquals("+79211234567", flattenPhoneNumber("+7 (921) 123-45-67"))
         assertEquals("123456798", flattenPhoneNumber("12 --  34- 5 -- 67 -98"))
         assertEquals("+12345", flattenPhoneNumber("+12 (3) 4-5"))
@@ -111,7 +112,7 @@ class Tests {
     @Test
     @Tag("Hard")
     fun firstDuplicateIndex() {
-        assertEquals(0, firstDuplicateIndex("a a"))
+        assertEquals(-1, firstDuplicateIndex("a x a x"))
         assertEquals(0, firstDuplicateIndex("A a"))
         assertEquals(-1, firstDuplicateIndex("Привет"))
         assertEquals(9, firstDuplicateIndex("Он пошёл в в школу"))
@@ -122,8 +123,8 @@ class Tests {
     @Test
     @Tag("Hard")
     fun mostExpensive() {
-        assertEquals("", mostExpensive(""))
-        assertEquals("a", mostExpensive("a 0"))
+        assertEquals("ф", mostExpensive("ф 0.0"))
+        assertEquals("z", mostExpensive("z 0.01; a 0"))
         assertEquals("Вино", mostExpensive("Вино 255.0"))
         assertEquals("Курица", mostExpensive("Хлеб 39.9; Молоко 62.5; Курица 184.0; Конфеты 89.9"))
     }
