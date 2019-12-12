@@ -268,10 +268,9 @@ class Tests {
     fun hasAnagrams() {
         assertFalse(hasAnagrams(emptyList()))
         assertTrue(hasAnagrams(listOf("рот", "свет", "тор")))
-        assertFalse(hasAnagrams(listOf("рот", "свет")))
-        assertTrue(hasAnagrams(listOf("", "")))
         assertFalse(hasAnagrams(listOf("")))
-
+        assertTrue(hasAnagrams(listOf("", "")))
+        assertFalse(hasAnagrams(listOf("рот", "свет")))
     }
 
     @Test

@@ -72,14 +72,9 @@ fun main() {
  * Обратите внимание: некорректная с точки зрения календаря дата (например, 30.02.2009) считается неверными
  * входными данными.
  */
-fun dateStrToDigit(str: String): String {
-    val parts = str.split(" ").toMutableList()
-    if (parts.size != 3) return ""
-    val day = parts[0]
-    var month = parts[1]
-    val year = parts[2]
-    if (parts[0].toIntOrNull() == null || parts[2].toIntOrNull() == null) return ""
-    month = when (month) {
+fun months(s: String): String {
+    var str = s
+    str = when (str) {
         "января" -> "1"
         "февраля" -> "2"
         "марта" -> "3"
@@ -92,8 +87,19 @@ fun dateStrToDigit(str: String): String {
         "октября" -> "10"
         "ноября" -> "11"
         "декабря" -> "12"
-        else -> return ""
+        else -> return str
     }
+    return str
+}
+fun dateStrToDigit(str: String): String {
+    val parts = str.split(" ").toMutableList()
+    if (parts.size != 3) return ""
+    val day = parts[0]
+    var month = parts[1]
+    val year = parts[2]
+    if (parts[0].toIntOrNull() == null || parts[2].toIntOrNull() == null) return ""
+    month = months(month)
+    if (month == parts[1]) return ""
     if (daysInMonth(month.toInt(), year.toInt()) < day.toInt()) return ""
     return String.format("%02d.%02d.%d", day.toInt(), month.toInt(), year.toInt())
 }
@@ -161,7 +167,7 @@ fun flattenPhoneNumber(phone: String): String {
     } else {
         return ""
     }
-    if (str.toString().isNotEmpty() && str[0].toString() == "0") return ""
+    if (str.toString().isNotEmpty() && str[0].toString() == "0" || str.toString().length < 2) return ""
     return str.toString()
 }
 

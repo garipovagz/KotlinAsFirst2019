@@ -311,21 +311,20 @@ fun hasDifferentDigits(n: Int): Boolean {
  * Использовать операции со строками в этой задаче запрещается.
  */
 fun squareSequenceDigit(n: Int): Int {
-    var count: Int
-    var countD = 0
-    var num = 0
-    for (i in 1..n) {
-        num = sqr(i)
-        count = digitNumber(num)
-        countD += count
-        if (countD >= n) break
+    if (n in 1..3) {
+        return sqr(n)
     }
-    if (countD != n) {
-        for (i in 1..countD - n) {
-            num /= 10
-        }
-    }
-    return num % 10
+    val result: Int
+    var index = 3
+    var k = 3
+    do {
+        k++
+        index += digitNumber(sqr(k))
+    } while (index < n && sqr(k) < sqr(n))
+    result = if (index > n) {
+        (sqr(k) / 10.0.pow(index - n)).toInt()
+    } else sqr(k)
+    return result % 10
 }
 
 /**
@@ -338,19 +337,15 @@ fun squareSequenceDigit(n: Int): Int {
  * Использовать операции со строками в этой задаче запрещается.
  */
 fun fibSequenceDigit(n: Int): Int {
-    var num = 0
-    var countD = 0
-    var count: Int
-    for (i in 1..n) {
-        num = fib(i)
-        count = digitNumber(num)
-        countD += count
-        if (countD >= n) break
-    }
-    if (countD != n) {
-        for (i in 1..countD - n) {
-            num /= 10
-        }
-    }
-    return num % 10
+    val result: Int
+    var index = 0
+    var k = 0
+    do {
+        k++
+        index += digitNumber(fib(k))
+    } while (index < n)
+    result = if (index > n) {
+        (fib(k) / 10.0.pow(index - n)).toInt()
+    } else fib(k)
+    return result % 10
 }

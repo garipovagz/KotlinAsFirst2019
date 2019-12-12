@@ -308,13 +308,17 @@ fun extractRepeats(list: List<String>): Map<String, Int> {
  */
 fun hasAnagrams(words: List<String>): Boolean {
     val a = mutableSetOf<Char>()
-    for (w in words) {
-        for (ch in w) a.add(ch)
-        for (s in words) {
-            var k = 0
-            for (l in s)
-                if (l in a) k++
-            if (k == s.length) return true
+    if (words.isNotEmpty()) {
+        for (w in words) {
+            for (ch in w) a.add(ch)
+            for (s in words) {
+                if (s != w) {
+                    var k = 0
+                    for (l in s)
+                        if (l in a) k++
+                    if (k == s.length) return true
+                }
+            }
         }
     }
     return false
