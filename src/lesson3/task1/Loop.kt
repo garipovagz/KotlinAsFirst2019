@@ -320,7 +320,7 @@ fun squareSequenceDigit(n: Int): Int {
     do {
         k++
         index += digitNumber(sqr(k))
-    } while (index < n && sqr(k) < sqr(n))
+    } while (index < n)
     result = if (index > n) {
         (sqr(k) / 10.0.pow(index - n)).toInt()
     } else sqr(k)
