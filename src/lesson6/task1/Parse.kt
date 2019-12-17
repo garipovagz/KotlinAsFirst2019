@@ -3,6 +3,7 @@
 package lesson6.task1
 
 import lesson2.task2.daysInMonth
+import java.lang.IllegalStateException
 import java.lang.StringBuilder
 
 /**
@@ -72,36 +73,21 @@ fun main() {
  * Обратите внимание: некорректная с точки зрения календаря дата (например, 30.02.2009) считается неверными
  * входными данными.
  */
-fun months(s: String): String {
-    var str = s
-    str = when (str) {
-        "января" -> "1"
-        "февраля" -> "2"
-        "марта" -> "3"
-        "апреля" -> "4"
-        "мая" -> "5"
-        "июня" -> "6"
-        "июля" -> "7"
-        "августа" -> "8"
-        "сентября" -> "9"
-        "октября" -> "10"
-        "ноября" -> "11"
-        "декабря" -> "12"
-        else -> return str
-    }
-    return str
-}
+val months = listOf(
+    "января", "февраля", "марта", "апреля", "мая", "июня", "июля", "августа", "сентября",
+    "октября", "ноября", "декабря"
+)
+
 fun dateStrToDigit(str: String): String {
     val parts = str.split(" ").toMutableList()
     if (parts.size != 3) return ""
     val day = parts[0]
-    var month = parts[1]
+    val month = (months.indexOf(parts[1]) + 1)
     val year = parts[2]
     if (parts[0].toIntOrNull() == null || parts[2].toIntOrNull() == null) return ""
-    month = months(month)
-    if (month == parts[1]) return ""
-    if (daysInMonth(month.toInt(), year.toInt()) < day.toInt()) return ""
-    return String.format("%02d.%02d.%d", day.toInt(), month.toInt(), year.toInt())
+    if (month == 0) return ""
+    if (daysInMonth(month, year.toInt()) < day.toInt()) return ""
+    return String.format("%02d.%02d.%d", day.toInt(), month, year.toInt())
 }
 
 /**
@@ -121,23 +107,9 @@ fun dateDigitToStr(digital: String): String {
     var month = parts[1]
     val year = parts[2]
     if (day.toIntOrNull() != null && month.toIntOrNull() != null && year.toIntOrNull() != null &&
-        daysInMonth(month.toInt(), year.toInt()) >= day.toInt()
+        daysInMonth(month.toInt(), year.toInt()) >= day.toInt() && month.toInt() in 1..12
     ) {
-        month = when (month) {
-            "01" -> "января"
-            "02" -> "февраля"
-            "03" -> "марта"
-            "04" -> "апреля"
-            "05" -> "мая"
-            "06" -> "июня"
-            "07" -> "июля"
-            "08" -> "августа"
-            "09" -> "сентября"
-            "10" -> "октября"
-            "11" -> "ноября"
-            "12" -> "декабря"
-            else -> return ""
-        }
+        month = months[month.toInt() - 1]
         return String.format("%d %s %d", day.toInt(), month, year.toInt())
     }
     return ""
@@ -159,7 +131,7 @@ fun dateDigitToStr(digital: String): String {
  */
 fun flattenPhoneNumber(phone: String): String {
     val reg = Regex("""\d+|^\+""").findAll(phone)
-    val excess = Regex("""[a-z]|[A-Z]|[а-я]|[А-Я] | \(\)|\+$|\d.*\+.*""")
+    val excess = Regex("""[a-z]|[A-Z]|[а-я]|[А-Я]|,|\(\)|\+$|\d.*\+.*""")
     val str = StringBuilder()
     if (!excess.containsMatchIn(phone)) {
         for (i in reg)
@@ -167,7 +139,7 @@ fun flattenPhoneNumber(phone: String): String {
     } else {
         return ""
     }
-    if (str.toString().isNotEmpty() && str[0].toString() == "0" || str.toString().length < 2) return ""
+    if (str.toString().isNotEmpty() && str[0].toString() == "0") return ""
     return str.toString()
 }
 
@@ -235,10 +207,13 @@ fun bestHighJump(jumps: String): Int {
  */
 fun plusMinus(expression: String): Int {
     val str = expression.split(" ")
-    var result = str[0].toInt()
+    var result: Int
+    if (str[0].toIntOrNull() != null) {
+        result = str[0].toInt()
+    } else throw IllegalArgumentException()
     var i = 1
     val reg = Regex("""^\+|^-|-\s-|\+\s-|-\s\+|\+\s\+""")
-    if (reg.containsMatchIn(expression)) throw IllegalArgumentException()
+    if (expression.contains(reg)) throw IllegalArgumentException()
     while (i != str.size) {
         when {
             str[i] == "+" -> result += str[i + 1].toInt()
@@ -271,13 +246,13 @@ fun firstDuplicateIndex(str: String): Int {
             break
         }
         index += string[i].length + 1
-        i += 1
+        i++
     }
     if (k != 1) {
         index = -1
     }
     if (index != -1 || i == 0) {
-        index += 1
+        index++
     }
     return index
 }
@@ -361,5 +336,5 @@ fun fromRoman(roman: String): Int = TODO()
  * IllegalArgumentException должен бросаться даже если ошибочная команда не была достигнута в ходе выполнения.
  *
  */
-fun computeDeviceCells(cells: Int, commands: String, limit: Int): List<Int> = TODO()
 
+fun computeDeviceCells(cells: Int, commands: String, limit: Int): List<Int> = TODO()

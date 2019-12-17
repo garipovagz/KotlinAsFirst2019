@@ -73,7 +73,7 @@ class Tests {
         assertEquals("", flattenPhoneNumber("134_874+"))
         assertEquals("", flattenPhoneNumber("134_+874"))
         assertEquals("", flattenPhoneNumber(" --+0-"))
-        assertEquals("", flattenPhoneNumber("   --   - --- - [  --  --  --1]  -    -- "))
+        assertEquals("", flattenPhoneNumber("   -  - -  - -  ---- - ------ --- -  --     - -    - -     -  -  ---    -   [ --  --1- -,    0 -- --] -- -"))
     }
 
     @Test
@@ -151,7 +151,6 @@ class Tests {
             listOf(0, 8, 7, 6, 5, 4, 3, 2, 1, 0, 0),
             computeDeviceCells(11, "<<<<< + >>>>>>>>>> --[<-] >+[>+] >++[--< <[<] >+[>+] >++]", 10000)
         )
-
         assertEquals(listOf(0, 0, 0, 0, 0, 1, 1, 0, 0, 0), computeDeviceCells(10, "+>+>+>+>+", 4))
         assertEquals(listOf(0, 0, -1, -1, -1, 0, 0, 0, 0, 0), computeDeviceCells(10, "<-<-<-<-<-", 6))
         assertEquals(listOf(1, 1, 1, 0, 0, -1, 0, 0, 0, 0), computeDeviceCells(10, "- <<<<< +[>+]", 17))

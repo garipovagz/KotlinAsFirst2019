@@ -2,6 +2,8 @@
 
 package lesson5.task1
 
+import java.nio.channels.InterruptedByTimeoutException
+
 /**
  * Пример
  *
@@ -307,19 +309,23 @@ fun extractRepeats(list: List<String>): Map<String, Int> {
  *   hasAnagrams(listOf("тор", "свет", "рот")) -> true
  */
 fun hasAnagrams(words: List<String>): Boolean {
-    val a = mutableSetOf<Char>()
-    if (words.isNotEmpty()) {
-        for (w in words) {
-            for (ch in w) a.add(ch)
-            for (s in words) {
-                if (s != w) {
-                    var k = 0
-                    for (l in s)
-                        if (l in a) k++
-                    if (k == s.length) return true
-                }
-            }
+    val a = mutableMapOf<String, Set<Char>>()
+    for (ww in words) {
+        val c = words - ww
+        if (c.contains(ww)) return true
+    }
+    for (word in words) {
+        a[word] = mutableSetOf()
+        for (char in word) {
+            a[word] = a[word]!! + char
         }
+    }
+    for (w in words) {
+        var k = 0
+        for ((_, ch) in a) {
+            if (ch == a[w]) k++
+        }
+        if (k >= 2) return true
     }
     return false
 }
@@ -356,8 +362,8 @@ fun propagateHandshakes(friends: Map<String, Set<String>>): Map<String, Set<Stri
     }
     for ((name, _) in f) {
         for (i in 1..f.size) {
-            for (freind in f[name]!!) {
-                f[name] = f[name]!! + freind + f[freind]!!
+            for (friend in f[name]!!) {
+                f[name] = f[name]!! + friend + f[friend]!!
             }
         }
         if (f[name]?.contains(name)!!) f[name] = f[name]!! - name
@@ -383,15 +389,19 @@ fun propagateHandshakes(friends: Map<String, Set<String>>): Map<String, Set<Stri
  *   findSumOfTwo(listOf(1, 2, 3), 6) -> Pair(-1, -1)
  */
 fun findSumOfTwo(list: List<Int>, number: Int): Pair<Int, Int> {
+    val result = mutableMapOf<Int, Int>()
+    var i = 0
     var a = -1
     var b = -1
-    var i = 0
-    while (i != list.size) {
-        if (number - list[i] in list) {
-            a = i
-            b = list.indexOf(number - list[i])
-        }
+    for (el in list) {
+        result[el] = i
         i++
+    }
+    for (k in 0 until list.size) {
+        if (number - list[i] in result) {
+            a = k
+            b = result[number - list[i]]!!
+        }
     }
     if (a == b && a != -1 && b != -1) {
         a = -1
@@ -404,6 +414,7 @@ fun findSumOfTwo(list: List<Int>, number: Int): Pair<Int, Int> {
     }
     return Pair(a, b)
 }
+
 
 /**
  * Очень сложная
