@@ -139,7 +139,7 @@ fun flattenPhoneNumber(phone: String): String {
     } else {
         return ""
     }
-    if (str.toString().isNotEmpty() && str[0].toString() == "0") return ""
+    if (str.toString().isNotEmpty() && str[0].toString() == "0" && str.length > 2) return ""
     return str.toString()
 }
 
@@ -337,4 +337,27 @@ fun fromRoman(roman: String): Int = TODO()
  *
  */
 
-fun computeDeviceCells(cells: Int, commands: String, limit: Int): List<Int> = TODO()
+fun computeDeviceCells(cells: Int, commands: String, limit: Int): List<Int> {
+    val result = mutableListOf<Int>()
+    for (i in 0 until cells)
+        result.add(0)
+    val exception = Regex("""[^ ><\[\]+\-]""")
+    var l = 0
+    var k = 0
+    var d = cells / 2
+    if (exception.containsMatchIn(commands)) throw IllegalArgumentException()
+    while (k < commands.length) {
+        if (l > limit) throw IllegalArgumentException()
+        when (commands[k]) {
+            '>' -> d++
+            '<' -> d--
+            '+' -> result[d]++
+            '-' -> result[d]--
+            ' ' -> l++
+        }
+        if (commands[k] != ' ') l++
+        if (commands.length > k) k++
+    }
+    return result.toList()
+}
+
