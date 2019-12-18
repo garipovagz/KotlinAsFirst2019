@@ -2,8 +2,8 @@
 
 package lesson7.task1
 
-import lesson9.task2.fifteenGameMoves
 import java.io.File
+import java.lang.StringBuilder
 
 /**
  * Пример
@@ -82,32 +82,42 @@ fun countSubstrings(inputName: String, substrings: List<String>): Map<String, In
  */
 fun sibilants(inputName: String, outputName: String) {
     val reader = File(inputName).readText()
-    val wr = File(outputName).writer()
-    val result = StringBuilder()
+    val wr = File(outputName).bufferedWriter()
     var i = 0
-    if (reader.isNotEmpty()) {
-        while (i != reader.length - 1) {
-            val w = reader[i].toUpperCase()
-            val c = reader[i + 1]
-            if (w == 'Ж' || w == 'Ч' || w == 'Ш' || w == 'Щ') {
-                when (reader[i + 1]) {
-                    'Ы' -> 'И'
-                    'ы' -> 'и'
-                    'Я' -> 'А'
-                    'я' -> 'а'
-                    'Ю' -> 'У'
-                    'ю' -> 'у'
+    while (i != reader.length) {
+        wr.write(reader[i].toString())
+        val w = reader[i].toUpperCase()
+        if (w == 'Ж' || w == 'Ч' || w == 'Ш' || w == 'Щ') {
+            when (reader[i + 1]) {
+                'Ы' -> {
+                    i++
+                    wr.write("И")
+                }
+                'ы' -> {
+                    i++
+                    wr.write("и")
+                }
+                'Я' -> {
+                    i++
+                    wr.write("А")
+                }
+                'я' -> {
+                    i++
+                    wr.write("а")
+                }
+                'Ю' -> {
+                    i++
+                    wr.write("У")
+                }
+                'ю' -> {
+                    i++
+                    wr.write("у")
                 }
             }
-            result.append(reader[i])
-            if (c != reader[i]) {
-                result.append(reader[i + 1])
-                i += 2
-            } else i++
         }
-        wr.append(result.toString())
-        wr.close()
+        i++
     }
+    wr.close()
 }
 
 
